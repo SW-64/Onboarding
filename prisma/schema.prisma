@@ -14,21 +14,29 @@ datasource db {
 }
 
 model User {
-    userId    Int      @id @default(autoincrement())
-    username  String
-    password  String
-    nickName  String
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
+    userId      Int       @id @default(autoincrement())
+    authorityId Int       @default(1) @map("authority_authorityId")
+    username    String
+    password    String
+    nickname    String
+    createdAt   DateTime  @default(now()) @map("created_at")
+    updatedAt   DateTime  @updatedAt @map("updated_at")
+    authority   Authority @relation(fields: [authorityId], references: [authorityId], onDelete: Cascade)
 
     @@map("users")
 }
 
 model Authority {
     authorityId   Int      @id @default(autoincrement())
-    authorityName String
+    authorityName UserType @default(ROLE_USER)
     createdAt     DateTime @default(now()) @map("created_at")
     updatedAt     DateTime @updatedAt @map("updated_at")
+    user          User[]
 
     @@map("authorities")
+}
+
+enum UserType {
+    ROLE_USER
+    ROLE_ADMIN
 }
