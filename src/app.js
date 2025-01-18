@@ -9,6 +9,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(apiRouter);
+app.use(cors()); // CORS 허용
+app.use(helmet()); // 보안 강화
 
 app.get('/', (req, res) => {
   return res.json('hello world');
