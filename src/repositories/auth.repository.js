@@ -32,12 +32,30 @@ class AuthRepository {
     return getMyInfo;
   };
 
-  SameWithPayload = async (Id) => {
+  sameWithPayload = async (Id) => {
     const user = await prisma.user.findUnique({
       where: { userId: Id },
       // omit: { password: true },
     });
     return user;
+  };
+
+  // 리프레쉬 토큰 저장
+  saveToToken = async (hashedRefreshToken, userId) => {
+    await prisma.refreshToken.upsert({
+      where: { userId: userId },
+      update: { refreshToken: hashedRefreshToken },
+      create: { userId: userId, refreshToken: hashedRefreshToken },
+    });
+  };
+
+  // 리프레쉬 토큰 조회
+  getToRefreshToken = async (userId) => {
+    const existedRefreshToken = await prisma.refreshToken.findUnique({
+      where: {
+        userId: userId,
+      },
+    });
   };
 }
 

@@ -1,4 +1,8 @@
-import { ACCESS_TOKEN_SECRET } from '../constants/env.constant.js';
+import {
+  ACCESS_TOKEN_SECRET,
+  HASHROUNDS,
+  REFRESH_TOKEN_SECRET,
+} from '../constants/env.constant.js';
 import AuthRepository from '../repositories/auth.repository.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -36,9 +40,15 @@ class AuthService {
     const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
       expiresIn: '1h',
     });
-
-    console.log(accessToken);
-    return accessToken;
+    const RefreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, {
+      expiresIn: '12h',
+    });
+    const hashedRefreshToken = bcrypt.hashSync(RefreshToken, +HASHROUNDS);
+    await this.authRepository.saveToToken(
+      hashedRefreshToken,
+      existedUser.userId,
+    );
+    return { accessToken, RefreshToken };
   };
 }
 
