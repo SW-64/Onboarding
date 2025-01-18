@@ -37,7 +37,7 @@ export const requireAccessToken = async (req, res, next) => {
 
     let payload;
     try {
-      payload = jwt.verify(accessToken, REFRESH_TOKEN_SECRET);
+      payload = jwt.verify(accessToken, ACCESS_TOKEN_SECRET);
     } catch (error) {
       // AccessToken의 유효기한이 지난 경우
       if (error.name === 'TokenExpiredError') {

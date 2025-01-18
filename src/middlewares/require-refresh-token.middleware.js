@@ -4,7 +4,7 @@ import { REFRESH_TOKEN_SECRET } from '../constants/env.constant.js';
 import AuthRepository from '../repositories/auth.repository.js';
 import bcrypt from 'bcrypt';
 const authRepository = new AuthRepository();
-export const requireAccessToken = async (req, res, next) => {
+export const requireRefreshToken = async (req, res, next) => {
   try {
     // 인증 정보 파싱
     const authorization = req.headers.authorization;
@@ -27,7 +27,7 @@ export const requireAccessToken = async (req, res, next) => {
       });
     }
 
-    // AccessToken이 없는 경우
+    // RefreshToken이 없는 경우
     if (!refreshToken) {
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         status: HTTP_STATUS.UNAUTHORIZED,
