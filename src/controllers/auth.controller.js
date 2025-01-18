@@ -1,5 +1,5 @@
 import AuthService from '../services/auth.service.js';
-
+import { HTTP_STATUS } from './../constants/http-status.constant.js';
 class AuthController {
   authService = new AuthService();
 

@@ -10,12 +10,14 @@ class AuthRepository {
         username,
         password: hashedPassword,
         nickname,
+        authority: {
+          connect: { authorityId: 1 },
+        },
       },
-      select: {
-        authority: {},
+      include: {
+        authority: true,
       },
     });
-    console.log(user);
     return user;
   };
 
@@ -28,6 +30,14 @@ class AuthRepository {
     });
 
     return getMyInfo;
+  };
+
+  SameWithPayload = async (Id) => {
+    const user = await prisma.user.findUnique({
+      where: { userId: Id },
+      // omit: { password: true },
+    });
+    return user;
   };
 }
 

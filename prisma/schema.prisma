@@ -15,13 +15,13 @@ datasource db {
 
 model User {
     userId      Int       @id @default(autoincrement())
-    authorityId Int       @map("authorityId")
+    authorityId Int       @default(1) @map("authority_authorityId")
     username    String
     password    String
-    nickName    String
+    nickname    String
     createdAt   DateTime  @default(now()) @map("created_at")
     updatedAt   DateTime  @updatedAt @map("updated_at")
-    authority   Authority @relation(fields: [authorityId], references: [authorityId])
+    authority   Authority @relation(fields: [authorityId], references: [authorityId], onDelete: Cascade)
 
     @@map("users")
 }
@@ -31,7 +31,7 @@ model Authority {
     authorityName UserType @default(ROLE_USER)
     createdAt     DateTime @default(now()) @map("created_at")
     updatedAt     DateTime @updatedAt @map("updated_at")
-    User          User[]
+    user          User[]
 
     @@map("authorities")
 }
