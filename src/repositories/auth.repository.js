@@ -56,6 +56,7 @@ class AuthRepository {
         userId: userId,
       },
     });
+    return existedRefreshToken;
   };
 }
 
